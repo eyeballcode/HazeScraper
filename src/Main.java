@@ -1,4 +1,3 @@
-import com.sun.awt.AWTUtilities;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,7 +24,6 @@ public class Main {
     public static void main(String[] a) throws IOException {
         pressedKeys.put(KeyEvent.VK_SHIFT, false);
         int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        System.out.println("Hour: " + hour + " " + (hour > 12 && hour <= 23));
         if (hour > 12 && hour <= 23)
             lastTime += "pm";
         else
@@ -49,9 +47,23 @@ public class Main {
         main.setLocation(0, 0);
         main.setAlwaysOnTop(true);
         main.setUndecorated(true);
-        main.setOpacity(0.7f);
+        main.setOpacity(0.86f);
         main.setBackground(Color.WHITE);
 //        AWTUtilities.setWindowOpaque(main, false);
+        main.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+                if (mouseWheelEvent.getWheelRotation() < 0) {
+                    if (main.getOpacity() + .1f > 1f)
+                        return;
+                    main.setOpacity(main.getOpacity() + 0.1f);
+                } else {
+                    if (main.getOpacity() - .1f < 0)
+                        return;
+                    main.setOpacity(main.getOpacity() - 0.1f);
+                }
+            }
+        });
         main.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -73,7 +85,6 @@ public class Main {
                             JOptionPane.showMessageDialog(null, "You don't have java.awt.desktop... :(", "Can't open link", JOptionPane.INFORMATION_MESSAGE);
                         }
                         Desktop desktop = Desktop.getDesktop();
-                        System.out.println(pressedKeys.get(KeyEvent.VK_SHIFT));
                         if (pressedKeys.get(KeyEvent.VK_SHIFT) != null && pressedKeys.get(KeyEvent.VK_SHIFT)) {
                             desktop.browse(new URI("https://github.com/eyeballcode/hazescraper"));
                             pressedKeys.put(KeyEvent.VK_SHIFT, false);
