@@ -25,6 +25,9 @@ I wan to close teh windowz. how Duz i do dat?
 
 > Select the window and click <kbd>ESC</kbd> + <kbd>ENTER</kbd>
 
+I wan to open the (?:Github link|Haze website). how Duz i do dat?
+
+> Select the window. If you want the haze website, just middle click. To open the github link, press and hold shift, then middle click
 
 -----
 

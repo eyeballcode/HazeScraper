@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 public class Main {
     // jQuery for selector the PSI vals.
@@ -19,7 +20,10 @@ public class Main {
     static int pY = 0;
     static String lastPSI = "unknown", lastTime = String.valueOf(GregorianCalendar.getInstance().get(Calendar.HOUR));
 
+    static HashMap<Integer, Boolean> pressedKeys = new HashMap<>();
+
     public static void main(String[] a) throws IOException {
+        pressedKeys.put(KeyEvent.VK_SHIFT, false);
         int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
         System.out.println("Hour: " + hour + " " + (hour > 12 && hour <= 23));
         if (hour > 12 && hour <= 23)
@@ -29,6 +33,7 @@ public class Main {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception exp) {
+            // Ignore
         }
 
         final JDialog main = new JDialog();
@@ -47,6 +52,17 @@ public class Main {
         main.setOpacity(0.7f);
         main.setBackground(Color.WHITE);
 //        AWTUtilities.setWindowOpaque(main, false);
+        main.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                pressedKeys.put(e.getKeyCode(), true);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                pressedKeys.put(e.getKeyCode(), false);
+            }
+        });
         main.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 pX = me.getX();
@@ -57,7 +73,13 @@ public class Main {
                             JOptionPane.showMessageDialog(null, "You don't have java.awt.desktop... :(", "Can't open link", JOptionPane.INFORMATION_MESSAGE);
                         }
                         Desktop desktop = Desktop.getDesktop();
-                        desktop.browse(new URI("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours"));
+                        System.out.println(pressedKeys.get(KeyEvent.VK_SHIFT));
+                        if (pressedKeys.get(KeyEvent.VK_SHIFT) != null && pressedKeys.get(KeyEvent.VK_SHIFT)) {
+                            desktop.browse(new URI("https://github.com/eyeballcode/hazescraper"));
+                            pressedKeys.put(KeyEvent.VK_SHIFT, false);
+                        } else {
+                            desktop.browse(new URI("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours"));
+                        }
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "Error while opening link: " + e.getClass().toString() + ": " + e.getMessage(),
                                 "Can't open link", JOptionPane.INFORMATION_MESSAGE);
@@ -101,8 +123,6 @@ public class Main {
                         main.revalidate();
                         int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
                         int timeIn12Hour = GregorianCalendar.getInstance().get(Calendar.HOUR);
-                        System.out.println(hour);
-                        System.out.println(timeIn12Hour);
                         if (hour > 12 && hour <= 23) {
                             String psi24 = hour24.select("td").get(hour - 12).text();
                             if (psi24.equals("-") && lastPSI.equals("Unknown")) {
