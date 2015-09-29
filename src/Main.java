@@ -16,8 +16,13 @@ public class Main {
 
     static int pX;
     static int pY = 0;
+    static String lastPSI = "Unknown", lastTime = String.valueOf(GregorianCalendar.getInstance().get(Calendar.HOUR));
 
     public static void main(String[] a) throws IOException {
+        if (GregorianCalendar.getInstance().get(Calendar.HOUR) > 12)
+            lastTime += "am";
+        else
+            lastTime += "pm";
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception exp) {
@@ -87,25 +92,38 @@ public class Main {
                             if (psi24.equals("-")) {
                                 psi24 = hour24.select("td").get(hour - 13).text();
                                 timeIn12Hour--;
+
                             }
+                            lastPSI = psi24;
                             label.setText("  As of " + timeIn12Hour + "pm, the PSI is " + psi24);
                             main.repaint();
                             System.out.println("As of " + timeIn12Hour + "pm, the PSI is " + psi24);
+                            lastTime = timeIn12Hour + "pm";
                         } else {
                             String psi12 = hour12.select("td").get(hour - 3).text();
                             if (psi12.equals("-")) {
                                 psi12 = hour24.select("td").get(hour - 4).text();
                                 timeIn12Hour--;
                             }
-
+                            lastPSI = psi12;
                             label.setText("  As of " + timeIn12Hour + "am, the PSI is " + psi12);
                             System.out.println("As of " + timeIn12Hour + "am, the PSI is " + psi12);
+                            lastTime = timeIn12Hour + "am";
                         }
+                        main.setPreferredSize(new Dimension(190, 30));
                         main.pack();
-                        main.repaint();
                         Thread.sleep(10000);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        if (lastPSI.equals("Unknown"))
+                            main.setPreferredSize(new Dimension(470, 30));
+                        else
+                            main.setPreferredSize(new Dimension(400, 30));
+                        label.setText(" PSI: " + lastPSI + " at " + lastTime + ". However, the latest PSI could not be fetched.");
+                        main.pack();
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e1) {
+                        }
                     }
                 }
             }
