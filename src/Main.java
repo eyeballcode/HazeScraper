@@ -16,7 +16,7 @@ public class Main {
 
     static int pX;
     static int pY = 0;
-    static String lastPSI = "Unknown", lastTime = String.valueOf(GregorianCalendar.getInstance().get(Calendar.HOUR));
+    static String lastPSI = "unknown", lastTime = String.valueOf(GregorianCalendar.getInstance().get(Calendar.HOUR));
 
     public static void main(String[] a) throws IOException {
         int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -98,7 +98,7 @@ public class Main {
                                 main.setPreferredSize(new Dimension(220, 30));
                             } else if (psi24.equals("-")) {
                                 timeIn12Hour--;
-                                psi24 = "Unknown";
+                                psi24 = hour24.select("td").get(hour - 13).text();
                                 main.setPreferredSize(new Dimension(220, 30));
                             } else {
                                 main.setPreferredSize(new Dimension(190, 30));
@@ -118,7 +118,7 @@ public class Main {
                                 main.setPreferredSize(new Dimension(220, 30));
                             } else if (psi12.equals("-")) {
                                 timeIn12Hour--;
-                                psi12 = "Unknown";
+                                psi12 = hour24.select("td").get(hour - 4).text();
                                 main.setPreferredSize(new Dimension(220, 30));
                             } else {
                                 main.setPreferredSize(new Dimension(190, 30));
