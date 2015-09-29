@@ -49,7 +49,6 @@ public class Main {
         main.setUndecorated(true);
         main.setOpacity(0.86f);
         main.setBackground(Color.WHITE);
-//        AWTUtilities.setWindowOpaque(main, false);
         main.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
@@ -194,6 +193,7 @@ public class Main {
                         try {
                             Thread.sleep(3000);
                         } catch (InterruptedException e1) {
+                            // Ignore
                         }
                     }
                 }

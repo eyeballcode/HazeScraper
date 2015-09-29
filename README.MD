@@ -15,7 +15,8 @@ What does it look like?
 
 How often does it update?
 
-> If you're connected to the internet, it updates every 10 seconds. Otherwise, it will attempt to try every 3 seconds until it gets internet.
+> If you're connected to the internet, it updates every 10 seconds. Otherwise, it will attempt to try every 3
+seconds until it gets internet.
 
 I wan to drag teh windowz around meh screen. how Duz i do dat?
 
@@ -27,7 +28,13 @@ I wan to close teh windowz. how Duz i do dat?
 
 I wan to open the (?:Github link|Haze website). how Duz i do dat?
 
-> Select the window. If you want the haze website, just middle click. To open the github link, press and hold shift, then middle click
+> Select the window. If you want the haze website, just middle click. To open the github link, press and hold shift,  
+then middle click
+
+Teh windowz is too opaque. how Duz i make it not so Opaque?
+
+> You can scroll up to increase the opacity. You can scroll down to decrease the opacity. When the opacity >= 0.1f,
+it automatically becomes red to make it easier to see.
 
 -----
 
