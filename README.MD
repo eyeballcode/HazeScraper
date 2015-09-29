@@ -14,7 +14,7 @@ What does it look like?
 
 How often does it update?
 
-> [See here](https://github.com/eyeballcode/HazeScraper/blob/master/src/Main.java#L106)
+> If you're connected to the internet, it updates every 10 seconds. Otherwise, it will attempt to try every 3 seconds until it gets internet.
 
 I wan to drag teh windowz around meh screen. how Duz i do dat?
 
