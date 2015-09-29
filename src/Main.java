@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -50,7 +51,18 @@ public class Main {
             public void mousePressed(MouseEvent me) {
                 pX = me.getX();
                 pY = me.getY();
-
+                if (me.getButton() == MouseEvent.BUTTON2) {
+                    try {
+                        if (!Desktop.isDesktopSupported()) {
+                            JOptionPane.showMessageDialog(null, "You don't have java.awt.desktop... :(", "Can't open link", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        Desktop desktop = Desktop.getDesktop();
+                        desktop.browse(new URI("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours"));
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Error while opening link: " + e.getClass().toString() + ": " + e.getMessage(),
+                                "Can't open link", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
             }
 
             public void mouseDragged(MouseEvent me) {
