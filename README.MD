@@ -8,7 +8,7 @@ So, what's this?
 
 > The PSI is high. You don't want an extra tab. This shows the live PSI from the [haze website](http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours).
 
-What does it look like:
+What does it look like?
 
 > ![](http://i.imgur.com/orDWGGi.png)
 
@@ -24,3 +24,9 @@ I wan to close teh windowz. how Duz i do dat?
 
 > Select the window and click <kbd>ESC</kbd> + <kbd>ENTER</kbd>
 
+
+-----
+
+# \#NOTES:
+
+This uses [jsoup](http://jsoup.org/), because I'm lazy to make my own HTML parser.
