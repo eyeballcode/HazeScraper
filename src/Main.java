@@ -57,10 +57,20 @@ public class Main {
                     if (main.getOpacity() + .1f > 1f)
                         return;
                     main.setOpacity(main.getOpacity() + 0.1f);
+                    if (main.getOpacity() > 0.1f) {
+                        main.setBackground(Color.WHITE);
+                        main.setForeground(Color.BLACK);
+                        main.repaint();
+                    }
                 } else {
-                    if (main.getOpacity() - .1f < 0)
+                    if (main.getOpacity() - .1f < 0f)
                         return;
                     main.setOpacity(main.getOpacity() - 0.1f);
+                    if (main.getOpacity() <= 0.1f) {
+                        main.setBackground(Color.RED);
+                    }
+
+
                 }
             }
         });
