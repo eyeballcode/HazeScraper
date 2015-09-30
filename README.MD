@@ -28,8 +28,7 @@ I wan to close teh windowz. how Duz i do dat?
 
 I wan to open the (?:Github link|Haze website). how Duz i do dat?
 
-> Select the window. If you want the haze website, just middle click. To open the github link, press and hold shift,  
-then middle click
+> Select the window. If you want the haze website, just middle click. To open the github link, press and hold shift, then middle click
 
 Teh windowz is too opaque. how Duz i make it not so Opaque?
 
