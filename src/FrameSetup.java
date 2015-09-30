@@ -61,22 +61,41 @@ public class FrameSetup {
             public void mousePressed(MouseEvent me) {
                 pX = me.getX();
                 pY = me.getY();
-                if (me.getButton() == MouseEvent.BUTTON2) {
+                int target = 0;
+                if (System.getProperty("os.name").toLowerCase().contains("mac os"))
+                    target = MouseEvent.BUTTON1;
+                else
+                    target = MouseEvent.BUTTON3;
+                if (me.getButton() == target) {
                     try {
                         if (!Desktop.isDesktopSupported()) {
                             JOptionPane.showMessageDialog(null, "You don't have java.awt.desktop... :(", "Can't open link", JOptionPane.INFORMATION_MESSAGE);
                         }
                         Desktop desktop = Desktop.getDesktop();
-                        if (pressedKeys.get(KeyEvent.VK_SHIFT) != null && pressedKeys.get(KeyEvent.VK_SHIFT)) {
-                            desktop.browse(new URI("https://github.com/eyeballcode/hazescraper"));
-                            pressedKeys.put(KeyEvent.VK_SHIFT, false);
+                        if (!System.getProperty("os.name").toLowerCase().contains("mac")) {
+                            if (pressedKeys.get(KeyEvent.VK_SHIFT) != null && pressedKeys.get(KeyEvent.VK_SHIFT)) {
+                                desktop.browse(new URI("https://github.com/eyeballcode/hazescraper"));
+                                pressedKeys.put(KeyEvent.VK_SHIFT, false);
+                            } else {
+                                desktop.browse(new URI("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours"));
+                            }
                         } else {
-                            desktop.browse(new URI("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours"));
+                            if (pressedKeys.get(KeyEvent.VK_META) != null && pressedKeys.get(KeyEvent.VK_META)) {
+                                if (pressedKeys.get(KeyEvent.VK_SHIFT) != null && pressedKeys.get(KeyEvent.VK_SHIFT)) {
+                                    desktop.browse(new URI("https://github.com/eyeballcode/hazescraper"));
+                                    pressedKeys.put(KeyEvent.VK_SHIFT, false);
+                                    pressedKeys.put(KeyEvent.VK_META, false);
+                                } else {
+                                    desktop.browse(new URI("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours"));
+                                    pressedKeys.put(KeyEvent.VK_META, false);
+                                }
+                            }
                         }
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "Error while opening link: " + e.getClass().toString() + ": " + e.getMessage(),
                                 "Can't open link", JOptionPane.INFORMATION_MESSAGE);
                     }
+
                 }
             }
 
