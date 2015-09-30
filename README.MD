@@ -1,5 +1,5 @@
 # [\#HazeScraper](https://twitter.com/hashtag/hazescraper)
-I heard the PSI is super (?:low|high) now, and (?:I|you) want live updates(?:every \d+ seconds)
+I heard the PSI is super (?:low|high) now, and (?:I|you) want live updates (?:every \d+ seconds)
 
 
 
