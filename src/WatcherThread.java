@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 
 public class WatcherThread extends Thread {
 
-    static String lastPSI = "unknown";
+    static String lastPSI = "Unknown";
 
     String lastTime = String.valueOf(GregorianCalendar.getInstance().get(Calendar.HOUR));
 
@@ -34,7 +34,6 @@ public class WatcherThread extends Thread {
                 Document document = Jsoup.connect("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours").get();
                 Element firstHalfOfDay = document.select(".noalter").get(1).children().select("tr").get(1);
                 Element secondHalfOfDay = document.select(".noalter").get(1).children().select("tr").get(3);
-//                System.out.println(secondHalfOfDay.html());
                 firstHalfOfDay.select("*").get(0).remove();
                 secondHalfOfDay.select("*").get(0).remove();
                 int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -57,14 +56,10 @@ public class WatcherThread extends Thread {
                 main.repaint();
                 label.setText("  As of " + hour + " 00, the PSI is " + currentPSI);
                 System.out.println("As of " + hour + " 00, the PSI is " + currentPSI);
-                //sleep
-                {
-                    Thread.sleep(10000);
-                }
+                Thread.sleep(10000);
             } catch (Exception e) {
-                e.printStackTrace();
                 if (lastPSI.equals("Unknown"))
-                    main.setPreferredSize(new Dimension(530, 30));
+                    main.setPreferredSize(new Dimension(510, 30));
                 else
                     main.setPreferredSize(new Dimension(430, 30));
                 label.setText(" PSI: " + lastPSI + " at " + lastTime + ". However, the latest PSI could not be fetched.");
@@ -88,9 +83,7 @@ public class WatcherThread extends Thread {
             currentPSI = firstHalfOfDay.select("*").get(hour + offset).text();
         } else if (hour >= 13 && hour <= 23) {
             // Afternoon - night
-            System.out.println(hour - 12);
             currentPSI = secondHalfOfDay.select("*").get(hour - 10).text();
-            System.out.println(currentPSI);
         }
         return currentPSI;
     }

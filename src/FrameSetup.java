@@ -1,3 +1,4 @@
+import javax.script.ScriptEngineManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -41,10 +42,10 @@ public class FrameSetup {
                     if (frame.getOpacity() - 0.1f <= 0.1f) {
                         frame.getContentPane().setBackground(Color.RED);
                         frame.getContentPane().setForeground(Color.WHITE);
-                        frame.repaint();
                     }
 
                     frame.setOpacity(frame.getOpacity() - 0.1f);
+                    frame.repaint();
                 }
             }
         });

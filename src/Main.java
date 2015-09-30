@@ -1,5 +1,8 @@
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
 import javax.swing.*;
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
 
@@ -11,7 +14,7 @@ public class Main {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception exp) {
-            // Ignore
+            JOptionPane.showMessageDialog(null, "Could not set LAF to the system, using metal.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         final JDialog main = new JDialog();
