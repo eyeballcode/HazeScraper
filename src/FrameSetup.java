@@ -31,8 +31,8 @@ public class FrameSetup {
                         return;
                     frame.setOpacity(frame.getOpacity() + 0.1f);
                     if (frame.getOpacity() > 0.1f) {
-                        frame.setBackground(Color.WHITE);
-                        frame.setForeground(Color.BLACK);
+                        frame.getContentPane().setBackground(Color.WHITE);
+                        frame.getContentPane().setForeground(Color.BLACK);
                         frame.repaint();
                     }
                 } else {
@@ -40,7 +40,8 @@ public class FrameSetup {
                         return;
                     frame.setOpacity(frame.getOpacity() - 0.1f);
                     if (frame.getOpacity() <= 0.1f) {
-                        frame.setBackground(Color.RED);
+                        frame.getContentPane().setBackground(Color.RED);
+                        frame.getContentPane().setForeground(Color.WHITE);
                         frame.repaint();
                     }
                 }
