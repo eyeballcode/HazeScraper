@@ -38,12 +38,13 @@ public class FrameSetup {
                 } else {
                     if (frame.getOpacity() - .1f < 0f)
                         return;
-                    frame.setOpacity(frame.getOpacity() - 0.1f);
-                    if (frame.getOpacity() <= 0.1f) {
+                    if (frame.getOpacity() - 0.1f <= 0.1f) {
                         frame.getContentPane().setBackground(Color.RED);
                         frame.getContentPane().setForeground(Color.WHITE);
                         frame.repaint();
                     }
+
+                    frame.setOpacity(frame.getOpacity() - 0.1f);
                 }
             }
         });
