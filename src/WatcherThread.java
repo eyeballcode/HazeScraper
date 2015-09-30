@@ -25,7 +25,6 @@ public class WatcherThread extends Thread {
             lastTime += "pm";
         else
             lastTime += "am";
-
     }
 
     @Override
@@ -79,13 +78,6 @@ public class WatcherThread extends Thread {
         }
     }
 
-    /*
-    17 00 -> 10;
-    16 00 -> 11;
-    14 00 -> 12;
-     */
-
-//    private static int[] times = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 12, 11, 10, 9, 8, 7, 6};
 
     private static String getPSI(Element firstHalfOfDay, Element secondHalfOfDay, int hour, String currentPSI, int offset) {
         if (hour == 12) {
