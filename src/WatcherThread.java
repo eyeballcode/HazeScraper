@@ -35,6 +35,7 @@ public class WatcherThread extends Thread {
                 Document document = Jsoup.connect("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours").get();
                 Element firstHalfOfDay = document.select(".noalter").get(1).children().select("tr").get(1);
                 Element secondHalfOfDay = document.select(".noalter").get(1).children().select("tr").get(3);
+//                System.out.println(secondHalfOfDay.html());
                 firstHalfOfDay.select("*").get(0).remove();
                 secondHalfOfDay.select("*").get(0).remove();
                 int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -84,6 +85,8 @@ public class WatcherThread extends Thread {
     14 00 -> 12;
      */
 
+//    private static int[] times = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 12, 11, 10, 9, 8, 7, 6};
+
     private static String getPSI(Element firstHalfOfDay, Element secondHalfOfDay, int hour, String currentPSI, int offset) {
         if (hour == 12) {
             // Noon
@@ -92,10 +95,10 @@ public class WatcherThread extends Thread {
             // Morning
             currentPSI = firstHalfOfDay.select("*").get(hour + offset).text();
         } else if (hour >= 13 && hour <= 23) {
-            // Afternoon - night            System.out.println(secondHalfOfDay.select("*").get(hour - (hour - 13) + offset).text());
-            System.out.println(secondHalfOfDay.select("*").get(hour - Integer.parseInt(String.valueOf(hour).substring(1)) + offset).text());
-
-            currentPSI = secondHalfOfDay.select("*").get(hour - (hour - 7) + offset).text();
+            // Afternoon - night
+            System.out.println(hour - 12);
+            currentPSI = secondHalfOfDay.select("*").get(hour - 10).text();
+            System.out.println(currentPSI);
         }
         return currentPSI;
     }
