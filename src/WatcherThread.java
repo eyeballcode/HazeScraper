@@ -62,6 +62,7 @@ public class WatcherThread extends Thread {
                     Thread.sleep(10000);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 if (lastPSI.equals("Unknown"))
                     main.setPreferredSize(new Dimension(530, 30));
                 else
@@ -77,6 +78,11 @@ public class WatcherThread extends Thread {
         }
     }
 
+    /*
+    17 00 -> 10;
+    16 00 -> 11;
+    14 00 -> 12;
+     */
 
     private static String getPSI(Element firstHalfOfDay, Element secondHalfOfDay, int hour, String currentPSI, int offset) {
         if (hour == 12) {
@@ -86,8 +92,10 @@ public class WatcherThread extends Thread {
             // Morning
             currentPSI = firstHalfOfDay.select("*").get(hour + offset).text();
         } else if (hour >= 13 && hour <= 23) {
-            // Afternoon - night
-            currentPSI = secondHalfOfDay.select("*").get(hour - 11 + offset).text();
+            // Afternoon - night            System.out.println(secondHalfOfDay.select("*").get(hour - (hour - 13) + offset).text());
+            System.out.println(secondHalfOfDay.select("*").get(hour - Integer.parseInt(String.valueOf(hour).substring(1)) + offset).text());
+
+            currentPSI = secondHalfOfDay.select("*").get(hour - (hour - 7) + offset).text();
         }
         return currentPSI;
     }
