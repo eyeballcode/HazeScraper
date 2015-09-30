@@ -18,13 +18,8 @@ public class WatcherThread extends Thread {
     JLabel label;
 
     public WatcherThread(JDialog main, JLabel label) {
-        int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
         this.main = main;
         this.label = label;
-        if (hour > 12 && hour <= 23)
-            lastTime += "pm";
-        else
-            lastTime += "am";
     }
 
     @Override
