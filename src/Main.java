@@ -1,33 +1,13 @@
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.io.IOException;
-import java.net.URI;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 public class Main {
-    // jQuery for selector the PSI vals.
+
+    // jQuery for selector the PSI values.
     // $($('table.noalter')[1]).children().children().not('.even').children()
 
-    static int pX;
-    static int pY = 0;
-    static String lastPSI = "unknown", lastTime = String.valueOf(GregorianCalendar.getInstance().get(Calendar.HOUR));
-
-    static HashMap<Integer, Boolean> pressedKeys = new HashMap<>();
 
     public static void main(String[] a) throws IOException {
-        pressedKeys.put(KeyEvent.VK_SHIFT, false);
-        int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        if (hour > 12 && hour <= 23)
-            lastTime += "pm";
-        else
-            lastTime += "am";
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception exp) {
@@ -35,172 +15,15 @@ public class Main {
         }
 
         final JDialog main = new JDialog();
-//        final JFrame main = new JFrame();
         main.setTitle("Haze!");
-        JRootPane root = main.getRootPane();
-        root.putClientProperty("Window.shadow", root);
-        main.setPreferredSize(new Dimension(190, 30));
         final JLabel label = new JLabel("Please wait..");
         main.add(label);
-        main.setResizable(false);
-        main.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        main.setLocation(0, 0);
-        main.setAlwaysOnTop(true);
-        main.setUndecorated(true);
-        main.setOpacity(0.86f);
-        main.setBackground(Color.WHITE);
-        main.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-                if (mouseWheelEvent.getWheelRotation() < 0) {
-                    if (main.getOpacity() + .1f > 1f)
-                        return;
-                    main.setOpacity(main.getOpacity() + 0.1f);
-                    if (main.getOpacity() > 0.1f) {
-                        main.setBackground(Color.WHITE);
-                        main.setForeground(Color.BLACK);
-                        main.repaint();
-                    }
-                } else {
-                    if (main.getOpacity() - .1f < 0f)
-                        return;
-                    main.setOpacity(main.getOpacity() - 0.1f);
-                    if (main.getOpacity() <= 0.1f) {
-                        main.setBackground(Color.RED);
-                    }
-
-
-                }
-            }
-        });
-        main.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                pressedKeys.put(e.getKeyCode(), true);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                pressedKeys.put(e.getKeyCode(), false);
-            }
-        });
-        main.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                pX = me.getX();
-                pY = me.getY();
-                if (me.getButton() == MouseEvent.BUTTON2) {
-                    try {
-                        if (!Desktop.isDesktopSupported()) {
-                            JOptionPane.showMessageDialog(null, "You don't have java.awt.desktop... :(", "Can't open link", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        Desktop desktop = Desktop.getDesktop();
-                        if (pressedKeys.get(KeyEvent.VK_SHIFT) != null && pressedKeys.get(KeyEvent.VK_SHIFT)) {
-                            desktop.browse(new URI("https://github.com/eyeballcode/hazescraper"));
-                            pressedKeys.put(KeyEvent.VK_SHIFT, false);
-                        } else {
-                            desktop.browse(new URI("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours"));
-                        }
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, "Error while opening link: " + e.getClass().toString() + ": " + e.getMessage(),
-                                "Can't open link", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }
-            }
-
-            public void mouseDragged(MouseEvent me) {
-                main.setLocation(main.getLocation().x + me.getX() - pX,
-                        main.getLocation().y + me.getY() - pY);
-            }
-        });
-
-        main.addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseDragged(MouseEvent me) {
-                main.setLocation(main.getLocation().x + me.getX() - pX,
-                        main.getLocation().y + me.getY() - pY);
-            }
-        });
-        KeyStroke close = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
-        Action action = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                int close = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confimation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (close == 0)
-                    System.exit(0);
-            }
-        };
-        root
-                .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(close, "ESCAPE");
-        root.getActionMap().put("ESCAPE", action);
+        FrameSetup.setupFrame(main, main.getRootPane());
         main.pack();
-        new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Document document = Jsoup.connect("http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours").get();
-                        Element hour12 = document.select(".noalter").get(1).children().select("tr").not(".even").get(0);
-                        Element hour24 = document.select(".noalter").get(1).children().select("tr").not(".even").get(1);
-                        main.revalidate();
-                        int hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                        int timeIn12Hour = GregorianCalendar.getInstance().get(Calendar.HOUR);
-                        if (hour > 12 && hour <= 23) {
-                            String psi24 = hour24.select("td").get(hour - 12).text();
-                            if (psi24.equals("-") && lastPSI.equals("Unknown")) {
-                                psi24 = "Unknown";
-                                main.setPreferredSize(new Dimension(220, 30));
-                            } else if (psi24.equals("-")) {
-                                timeIn12Hour--;
-                                psi24 = hour24.select("td").get(hour - 13).text();
-                                main.setPreferredSize(new Dimension(220, 30));
-                            } else {
-                                main.setPreferredSize(new Dimension(190, 30));
-                                psi24 = hour24.select("td").get(hour - 12).text();
-                                System.out.println(hour24.select("td").get(hour - 12).text());
-                            }
-                            lastPSI = psi24;
-                            main.pack();
-                            label.setText("  As of " + timeIn12Hour + "pm, the PSI is " + psi24);
-                            main.repaint();
-                            System.out.println("As of " + timeIn12Hour + "pm, the PSI is " + psi24);
-                            lastTime = timeIn12Hour + "pm";
-                        } else {
-                            String psi12 = hour12.select("td").get(hour - 3).text();
-                            if (psi12.equals("-") && lastPSI.equals("Unknown")) {
-                                psi12 = "Unknown";
-                                main.setPreferredSize(new Dimension(220, 30));
-                            } else if (psi12.equals("-")) {
-                                timeIn12Hour--;
-                                psi12 = hour24.select("td").get(hour - 4).text();
-                                main.setPreferredSize(new Dimension(220, 30));
-                            } else {
-                                main.setPreferredSize(new Dimension(190, 30));
-                                psi12 = hour24.select("td").get(hour - 3).text();
-                            }
-                            lastPSI = psi12;
-                            main.pack();
-                            label.setText("  As of " + timeIn12Hour + "am, the PSI is " + psi12);
-                            System.out.println("As of " + timeIn12Hour + "am, the PSI is " + psi12);
-                            lastTime = timeIn12Hour + "am";
-                        }
-                        Thread.sleep(10000);
-                    } catch (Exception e) {
-                        if (lastPSI.equals("Unknown"))
-                            main.setPreferredSize(new Dimension(530, 30));
-                        else
-                            main.setPreferredSize(new Dimension(430, 30));
-                        label.setText(" PSI: " + lastPSI + " at " + lastTime + ". However, the latest PSI could not be fetched.");
-                        main.pack();
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e1) {
-                            // Ignore
-                        }
-                    }
-                }
-            }
-//        };
-        }.start();
+        new WatcherThread(main, label).start();
         main.setVisible(true);
     }
+
+
 }
 
