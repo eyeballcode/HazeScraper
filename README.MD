@@ -7,10 +7,6 @@ So, what's this?
 
 > The PSI is high. You don't want an extra tab. This shows the live PSI from the [haze website](http://www.haze.gov.sg/haze-updates/psi-readings-over-the-last-24-hours).
 
-What does it look like?
-
-> ![](http://i.imgur.com/orDWGGi.png)
-
 How often does it update?
 
 > If you're connected to the internet, it updates every 10 seconds. Otherwise, it will attempt to try every 3
